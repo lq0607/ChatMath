@@ -1,0 +1,45 @@
+{
+  "manifest_version": 2,
+
+  "name": "ChatGPT for Math",
+  "short_name": "ChatMath",
+  "author": "Qiao",
+  "description": "A plugin to enhance the experience of ChatGPT for math",
+  "version": "1.0.0",
+
+  "icons": {
+    "128": "img/icon128.png",
+    "48": "img/icon48.png"
+  },
+
+  "browser_action": {
+    "default_icon": {
+      "38": "img/browser38.png",
+      "19": "img/browser19.png"
+    },
+    "default_title": "ChatGPT for Math"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "all_frames": true,
+      "js": ["js/texify.js"],
+      "run_at": "document_end"
+    }
+  ],
+
+  "background": {
+    "scripts": ["js/background.js"],
+    "persistent": true
+  },
+
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking",
+    "<all_urls>",
+    "runtime"
+  ],
+
+  "web_accessible_resources" : ["js/pageScript.js"]
+}
