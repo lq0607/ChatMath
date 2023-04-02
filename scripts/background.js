@@ -76,3 +76,4 @@ function get_hostname(url) {
   parser.href = url;
   return parser.hostname;
 }
+

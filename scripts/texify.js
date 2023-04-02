@@ -16,9 +16,9 @@ chrome.runtime.sendMessage({method: 'shouldTeXify', host: location.host},
         display_delimiters.push(['\\[', '\\]']);
 
       var pageScript = document.createElement('script');
-      pageScript.id = 'texAllTheThingsPageScript';
+      pageScript.id = 'ChatMathScript';
       pageScript.type = 'text/javascript';
-      pageScript.src = chrome.extension.getURL('js/pageScript.js');
+      pageScript.src = chrome.extension.getURL('scripts/pageScript.js');
       pageScript.setAttribute('inlineMath', JSON.stringify(inline_delimiters));
       pageScript.setAttribute('displayMath', JSON.stringify(display_delimiters));
 

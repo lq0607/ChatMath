@@ -22,15 +22,17 @@
 
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
+      "matches": [
+        "https://chat.openai.com/chat*"
+      ],
       "all_frames": true,
-      "js": ["js/texify.js"],
+      "js": ["scripts/texify.js"],
       "run_at": "document_end"
     }
   ],
 
   "background": {
-    "scripts": ["js/background.js"],
+    "scripts": ["scripts/background.js"],
     "persistent": true
   },
 
@@ -41,5 +43,5 @@
     "runtime"
   ],
 
-  "web_accessible_resources" : ["js/pageScript.js"]
+  "web_accessible_resources" : ["scripts/pageScript.js"]
 }

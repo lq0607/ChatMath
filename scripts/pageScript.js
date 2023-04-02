@@ -3,7 +3,7 @@
 let mathJaxReady = false;
 
 function config() {
-  var scriptNode = document.getElementById('texAllTheThingsPageScript');
+  var scriptNode = document.getElementById('ChatMathScript');
   MathJax.Hub.Config({
     showProcessingMessages: false,
     messageStyle: 'none',
