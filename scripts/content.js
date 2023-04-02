@@ -43,6 +43,7 @@ function toggleAndReplaceTextarea() {
       customTextarea.style = textarea.style.cssText;
       customTextarea.placeholder = 'Send a message...';
       customTextarea.style.overflow = 'hidden'; // Hide the scrollbar
+      customTextarea.textContent = textarea.textContent; // copy the text from the textarea to the customTextarea
       
       // Insert the custom textarea before the original textarea
       textarea.parentNode.insertBefore(customTextarea, textarea);
@@ -182,7 +183,7 @@ function betterEquationsStateUpdate(isChecked){
     betterEquationsPrompt = '';
     betterEquations = false;
   }
-  console.info(betterEquationsPrompt);
+  // console.info(betterEquationsPrompt);
 }
 
 function betterExplanationsState(isChecked){
@@ -193,7 +194,7 @@ function betterExplanationsState(isChecked){
     betterExplanationsPrompt = '';
     betterExplanations = false;
   }
-  console.info(betterExplanationsPrompt)
+  // console.info(betterExplanationsPrompt)
 }
 
 
@@ -202,6 +203,10 @@ function createToolbar() {
   // Create the toolbar container element
   const toolbar = document.createElement('div');
   toolbar.classList.add('toolbar');
+  
+  // Create the ChatMath label
+  const ChatMathLabel = document.createElement('label');
+  ChatMathLabel.textContent = ' ChatMath: ';
 
   // Create the first checkbox and label
   const enableBetterEquationsCheckbox = document.createElement('input');
@@ -222,6 +227,9 @@ function createToolbar() {
   enableBetterExplanationsLabel.textContent = ' Better explanations ';
 
   // Add the checkboxes and labels to the toolbar
+  toolbar.appendChild(ChatMathLabel);
+  ChatMathLabel.style.marginRight = '10px';
+
   toolbar.appendChild(enableBetterEquationsCheckbox);
   toolbar.appendChild(enableBetterEquationsLabel);
   enableBetterEquationsLabel.style.marginRight = '20px';
@@ -242,4 +250,5 @@ function createToolbar() {
   return toolbar;
 }
 
-setInterval(toggleAndReplaceTextarea, 5000); // periodically update the function
+toggleAndReplaceTextarea()
+setInterval(toggleAndReplaceTextarea, 3000); // periodically update the function

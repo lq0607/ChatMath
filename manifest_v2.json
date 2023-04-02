@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
 
   "name": "ChatGPT for Math",
   "short_name": "ChatMath",
@@ -12,7 +12,7 @@
     "48": "img/icon48.png"
   },
 
-  "browser_action": {
+  "action": {
     "default_icon": {
       "38": "img/browser38.png",
       "19": "img/browser19.png"
@@ -28,22 +28,28 @@
       "all_frames": true,
       "js": ["scripts/texify.js",
               "scripts/content.js"],
-      "run_at": "document_end",
-      "type": "module"
+      "run_at": "document_end"
     }
   ],
 
   "background": {
-    "scripts": ["scripts/background.js"],
-    "persistent": true
+    "service_worker": "scripts/background.js"
   },
 
   "permissions": [    
     "<all_urls>",
     "webRequest",
-    "runtime"
+    "webRequestBlocking",
+    "storage", 
+    "activeTab", 
+    "tabs"
   ],
 
-  "web_accessible_resources" : ["scripts/pageScript.js",
-                                "scripts/toolbar.js"]
+  "web_accessible_resources" : [
+    {
+      "resources" : ["scripts/pageScript.js",
+                    "scripts/toolbar.js"],
+      "matches" : ["https://chat.openai.com/chat*"]
+    }
+  ]
 }

@@ -1,22 +1,3 @@
-// /*----- Handle the popup page -----*/
-// chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-//   // Handle the 'getCheckboxState' action
-//   if (request.action === 'getCheckboxState') {
-//     // Get the checkbox state from the storage
-//     chrome.storage.sync.get(request.stateKey, (data) => {
-//       sendResponse({ state: data[request.stateKey] });
-//     });
-//     return true; // Required to use sendResponse asynchronously
-//   }
-//   // Handle the 'setCheckboxState' action
-//   else if (request.action === 'setCheckboxState') {
-//     // Set the checkbox state in the storage
-//     chrome.storage.sync.set({ [request.stateKey]: request.state });
-//   }
-// });
-
-
-
 /*----- For Math rendering -----*/
 // Check if the conversation is finished
 const urlPattern = '*://chat.openai.com/backend-api/conversation*';
