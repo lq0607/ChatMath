@@ -1,26 +1,37 @@
-let enableChatMath = false;
-let betterEquations = true;
-let betterExplanations = true;
+let enableChatMath = true;
+let betterEquations = false;
+let betterExplanations = false;
 let betterEquationsPrompt = '';
 let betterExplanationsPrompt = ''
-let headerPrompt = ''
 
 let replacedTextareas = new Map();
 let replacedButtons = new Map();
 
+// Create the toolbar component
+const toolbar = createToolbar();
+
 function toggleAndReplaceTextarea() {
+  // Determine the status of ChatMath, which is determined by the status of the options.
+  if (betterEquations || betterExplanations){
+    enableChatMath = true;
+  } else {
+    enableChatMath = false;
+  }
+
   /* Replace the textarea with a custom textarea */
   const textareas = document.querySelectorAll('textarea[tabindex="0"][placeholder="Send a message..."]');
   for (let textarea of textareas) {
     if (replacedTextareas.has(textarea)) {
       // If the original textarea has a custom textarea, toggle its display
       const customTextarea = replacedTextareas.get(textarea);
-      if (enableChatMath) { //if (customTextarea.style.display === 'none') {
+      if (enableChatMath) { 
         customTextarea.style.display = ''; // makes the custom textarea visible 
         textarea.style.display = 'none'; // hide the original textarea
+        customTextarea.textContent = textarea.textContent; // copy the text from the textarea to the customTextarea
       } else {
         customTextarea.style.display = 'none';
         textarea.style.display = '';
+        textarea.textContent = customTextarea.textContent; // copy the text from the customTextarea to the textarea
       }
     } else {
       // Hide the original textarea
@@ -30,18 +41,22 @@ function toggleAndReplaceTextarea() {
       const customTextarea = document.createElement('textarea');
       customTextarea.className = textarea.className;
       customTextarea.style = textarea.style.cssText;
+      customTextarea.placeholder = 'Send a message...';
       customTextarea.style.overflow = 'hidden'; // Hide the scrollbar
       
       // Insert the custom textarea before the original textarea
       textarea.parentNode.insertBefore(customTextarea, textarea);
       
-      // Set the custom textarea's display property to 'none' initially
+      // Add toolbar after the textarea
+      textarea.parentNode.parentNode.appendChild(toolbar)
+
+      // Set the custom textarea's display property to 'none' initially to hide it
       customTextarea.style.display = '';
 
       // Add the original and custom textarea to the replacedTextareas Map
       replacedTextareas.set(textarea, customTextarea);
 
-      /* Detect if the custom textarea is empty and disable/enable the button */
+      /*----- Detect if the custom textarea is empty and disable/enable the button -----*/
       customTextarea.addEventListener('input', function () {
         const buttons = document.querySelectorAll('button');
           for (let button of buttons) {
@@ -55,7 +70,7 @@ function toggleAndReplaceTextarea() {
         }
       );
 
-      /* Automatically resize the custom textarea */
+      /*----- Automatically resize the custom textarea -----*/
       function updateTextareaHeight(textarea) {
         // Reset the height to enable resizing
         customTextarea.style.height = '24px';
@@ -69,7 +84,7 @@ function toggleAndReplaceTextarea() {
         updateTextareaHeight(customTextarea);
       });
 
-      /* Add an event listener for the 'keydown' event */
+      /*----- Add an event listener for the 'keydown' event -----*/
       customTextarea.addEventListener('keydown', function (event) {
         // Check if the Enter key is pressed
         if (event.key === 'Enter') {
@@ -88,7 +103,13 @@ function toggleAndReplaceTextarea() {
             // If only the Enter key is pressed, perform the previous behavior
             event.preventDefault(); // Prevent the default behavior of the Enter key
             
-            const insertPrompt = '\n\n[' + headerPrompt + '\n' + betterEquationsPrompt + '\n' + betterExplanationsPrompt + ']'
+            // Form the prompt text
+            if (enableChatMath) {
+              insertPrompt = '\n\n[Write your answer with the following requirements:' + betterEquationsPrompt + betterExplanationsPrompt + ']';
+            } else {
+              insertPrompt = '';
+            }
+
             customTextarea.value += insertPrompt; // Append the fixed text to the custom textarea          
             textarea.value = customTextarea.value; // Copy the combined text to the original textarea
 
@@ -103,12 +124,12 @@ function toggleAndReplaceTextarea() {
     }
   }
 
-  /* Replace the textarea with a custom textarea */
+  /* Replace the button with a custom button */
   const buttons = document.querySelectorAll('button:has(svg.h-4.w-4.mr-1 polygon)');
   for (let button of buttons) {
     if (replacedButtons.has(button)) {
       const customButton = replacedButtons.get(button);
-      if (enableChatMath) { // if (customButton.style.display === 'none') {
+      if (enableChatMath) { 
         customButton.style.display = '';
         button.style.display = 'none';
       } else {
@@ -153,22 +174,11 @@ function toggleAndReplaceTextarea() {
 }
 
 
-
-function enableChatMathStateUpdata(isChecked){
-  if (isChecked) {
-    enableChatMath = true;
-  } else {
-    enableChatMath = false;
-  }
-}
-
 function betterEquationsStateUpdate(isChecked){
   if (isChecked) {
-    headerPrompt = 'Write your answer with the following requirements:';
-    betterEquationsPrompt = '- Please write all equations and notations (if there are any) in LaTeX code format, but do not put them in the code block.';
+    betterEquationsPrompt = '\n - Please write all equations and notations (if there are any) in LaTeX code format, but do not put them in the code block.';
     betterEquations = true;
   } else {
-    headerPrompt = '';
     betterEquationsPrompt = '';
     betterEquations = false;
   }
@@ -177,29 +187,59 @@ function betterEquationsStateUpdate(isChecked){
 
 function betterExplanationsState(isChecked){
   if (isChecked) {
-    headerPrompt = 'Write your answer with the following requirements:';
-    betterExplanationsPrompt = '- Please write the explanation for beginners. You should give intuitions and simple numeric examples for the concepts you are explaining.';
+    betterExplanationsPrompt = '\n - Please write the explanation for beginners. You should give intuitions and simple numeric examples for the concepts you are explaining.';
     betterExplanations = true;
   } else {
-    headerPrompt = '';
     betterExplanationsPrompt = '';
     betterExplanations = false;
   }
   console.info(betterExplanationsPrompt)
 }
 
-// Add the existing chrome.runtime.onMessage.addListener code here
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action === 'enableChatMathState') {
-    enableChatMathStateUpdata(request.checked)
-  } else if (request.action === 'betterEquationsState') {
-    betterEquationsStateUpdate(request.checked)
-  } else if (request.action === 'betterExplanationsState') {
-    betterExplanationsState(request.checked)
-  }
-  toggleAndReplaceTextarea();
-});
 
-// enableChatMathStateUpdata(false)
-// betterEquationsStateUpdate(false)
-// betterExplanationsState(false)
+// Define the toolbar component
+function createToolbar() {
+  // Create the toolbar container element
+  const toolbar = document.createElement('div');
+  toolbar.classList.add('toolbar');
+
+  // Create the first checkbox and label
+  const enableBetterEquationsCheckbox = document.createElement('input');
+  enableBetterEquationsCheckbox.type = 'checkbox';
+  enableBetterEquationsCheckbox.id = 'enableBetterEquations';
+
+  const enableBetterEquationsLabel = document.createElement('label');
+  enableBetterEquationsLabel.htmlFor = 'enableBetterEquationsCheckbox';
+  enableBetterEquationsLabel.textContent = ' Better equations ';
+
+  // Create the second checkbox and label
+  const enableBetterExplanationsCheckbox = document.createElement('input');
+  enableBetterExplanationsCheckbox.type = 'checkbox';
+  enableBetterExplanationsCheckbox.id = 'enableBetterExplanations';
+
+  const enableBetterExplanationsLabel = document.createElement('label');
+  enableBetterExplanationsLabel.htmlFor = 'enableBetterExplanationsCheckbox';
+  enableBetterExplanationsLabel.textContent = ' Better explanations ';
+
+  // Add the checkboxes and labels to the toolbar
+  toolbar.appendChild(enableBetterEquationsCheckbox);
+  toolbar.appendChild(enableBetterEquationsLabel);
+  enableBetterEquationsLabel.style.marginRight = '20px';
+  
+  toolbar.appendChild(enableBetterExplanationsCheckbox);
+  toolbar.appendChild(enableBetterExplanationsLabel);
+  enableBetterExplanationsLabel.style.marginRight = '20px';
+
+  // Add event listeners to the checkboxes
+  enableBetterEquationsCheckbox.addEventListener('change', function() {
+    betterEquationsStateUpdate(this.checked)
+  });
+  enableBetterExplanationsCheckbox.addEventListener('change', function() {
+    betterExplanationsState(this.checked)
+  });
+
+  // Return the toolbar element
+  return toolbar;
+}
+
+setInterval(toggleAndReplaceTextarea, 5000); // periodically update the function

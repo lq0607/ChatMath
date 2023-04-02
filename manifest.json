@@ -17,8 +17,7 @@
       "38": "img/browser38.png",
       "19": "img/browser19.png"
     },
-    "default_title": "ChatGPT for Math",
-    "default_popup": "scripts/popup.html"
+    "default_title": "ChatGPT for Math"
   },
 
   "content_scripts": [
@@ -29,7 +28,8 @@
       "all_frames": true,
       "js": ["scripts/texify.js",
               "scripts/content.js"],
-      "run_at": "document_end"
+      "run_at": "document_end",
+      "type": "module"
     }
   ],
 
@@ -48,5 +48,6 @@
     "tabs"
   ],
 
-  "web_accessible_resources" : ["scripts/pageScript.js"]
+  "web_accessible_resources" : ["scripts/pageScript.js",
+                                "scripts/toolbar.js"]
 }

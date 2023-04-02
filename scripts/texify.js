@@ -1,6 +1,5 @@
 chrome.runtime.sendMessage({method: 'shouldTeXify', host: location.host},
   function(response) {
-    console.info('something')
     if (JSON.parse(response.answer)) {
 
       var mathjax = document.createElement('script');

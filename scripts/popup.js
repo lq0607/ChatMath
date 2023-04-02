@@ -16,6 +16,6 @@ function updateCheckboxState(id, stateKey) {
 }
 
 // Initialize the checkboxes with their respective state keys
-updateCheckboxState('enableChatMathCheckbox', 'enableChatMathState');
+// updateCheckboxState('enableChatMathCheckbox', 'enableChatMathState');
 updateCheckboxState('betterEquationsCheckbox', 'betterEquationsState');
 updateCheckboxState('betterExplanationsCheckbox', 'betterExplanationsState');
