@@ -1,5 +1,3 @@
-
-// let isRequestOngoing = false;
 let mathJaxReady = false;
 
 function config() {
@@ -24,7 +22,7 @@ function waitForMathJax(){
   if(typeof MathJax !== 'undefined'){
     config();
     MathJax.Hub.Configured();
-    mathJaxReady = true
+    mathJaxReady = true;
   }
   else{
     mathJaxReady = false
@@ -33,7 +31,9 @@ function waitForMathJax(){
 }
 
 waitForMathJax();
+setTimeout(reTeX, 10000);
 
 document.addEventListener('requestCompleted', () => {
-  reTeX()
+  // reTeX()
+  setTimeout(reTeX, 1000); // delay 1 second before rendering
 });

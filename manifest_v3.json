@@ -39,15 +39,13 @@
   "permissions": [    
     "<all_urls>",
     "runtime",
-    "webRequest",
+    "webRequest", 
     "scripting"
-  ],
-  "host_permissions": [
-      "<all_urls>"
   ],
   "web_accessible_resources" : [
     {
       "resources" : ["scripts/pageScript.js",
+                    "scripts/toolbar.js",
                     "lib/MathJax/**"],
       "matches": ["<all_urls>"]
     }

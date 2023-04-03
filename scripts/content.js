@@ -246,5 +246,6 @@ function createToolbar() {
   return toolbar;
 }
 
+
 setInterval(toggleAndReplaceTextarea, 3000); // periodically update the function
 // setTimeout(toggleAndReplaceTextarea, 10000);
