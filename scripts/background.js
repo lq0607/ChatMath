@@ -17,7 +17,8 @@ chrome.webRequest.onSendHeaders.addListener(
 
 chrome.webRequest.onCompleted.addListener(
   (details) => {
-    // console.info('end');
+    // ///////    
+    console.info('end');
     chrome.scripting.executeScript({
       target: {tabId: details.tabId},
       function: function() {
@@ -27,6 +28,8 @@ chrome.webRequest.onCompleted.addListener(
   },
   { urls: [urlPattern] }
 );
+
+
 
 
 // // Set the headers to allow the MathJax CDN if we're typesetting this page
@@ -86,4 +89,6 @@ function get_hostname(url) {
   parser.href = url;
   return parser.hostname;
 }
+
+
 

@@ -1,0 +1,2 @@
+use chrome.debugger API to attach to the tab and capture the Network.responseReceived and Network.loadingFinished events.
+"activeTab": to access the response 

@@ -15,11 +15,12 @@ let customButton = document.createElement('button');
 const toolbar = createToolbar();
 
 function toggleAndReplaceTextarea() {
-  if (!initialized) { // if not initialized, we initialize the elements
+  if (initialized == false) { // if not initialized, we initialize the elements
     console.info("ChatMath initialization")
+    initialized = true;
     
     /*===== Replace the textarea with a custom textarea =====*/    
-    textarea = document.querySelector('textarea[tabindex="0"][placeholder="Send a message..."]'); // Find the textarea
+    textarea = document.querySelector('textarea[tabindex="0"][placeholder="Send a message."]'); // Find the textarea
     
     // Hide the original textarea
     textarea.style.display = 'none';
@@ -27,7 +28,7 @@ function toggleAndReplaceTextarea() {
     // Create a custom textarea
     customTextarea.className = textarea.className;
     customTextarea.style = textarea.style.cssText;
-    customTextarea.placeholder = 'Send a message...';
+    customTextarea.placeholder = 'Send a message.';
     customTextarea.style.overflow = 'hidden'; // Hide the scrollbar
     customTextarea.textContent = textarea.textContent; // copy the text from the textarea to the customTextarea
     
@@ -123,8 +124,6 @@ function toggleAndReplaceTextarea() {
         customButton.disabled = customTextarea.value.trim() === '';      
       }
     );
-
-    initialized = true;
   }
 
   // check if toolbar is inserted correctly
@@ -190,7 +189,6 @@ function betterExplanationsState(isChecked){
   // console.info(betterExplanationsPrompt)
 }
 
-
 // Define the toolbar component
 function createToolbar() {
   // Create the toolbar container element
@@ -248,4 +246,4 @@ function createToolbar() {
 
 
 setInterval(toggleAndReplaceTextarea, 3000); // periodically update the function
-// setTimeout(toggleAndReplaceTextarea, 10000);
+// setTimeout(toggleAndReplaceTextarea, 1000

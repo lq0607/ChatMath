@@ -9,11 +9,11 @@ chrome.runtime.sendMessage({method: 'shouldTeXify', host: location.host},
       
       var inline_delimiters = [];
         inline_delimiters.push(['$', '$']);
-        inline_delimiters.push(['[;', ';]']);
+        // inline_delimiters.push(['[;', ';]']);
       
       var display_delimiters = [];
         display_delimiters.push(['$$', '$$']);
-        display_delimiters.push(['\\[', '\\]']);
+        // display_delimiters.push(['\\[', '\\]']);
 
       var pageScript = document.createElement('script');
       pageScript.id = 'ChatMathScript';
@@ -22,7 +22,7 @@ chrome.runtime.sendMessage({method: 'shouldTeXify', host: location.host},
       // pageScript.src = chrome.extension.getURL('scripts/pageScript.js');
       pageScript.setAttribute('inlineMath', JSON.stringify(inline_delimiters));
       pageScript.setAttribute('displayMath', JSON.stringify(display_delimiters));
-
+      
       document.body.appendChild(mathjax);
       document.body.appendChild(pageScript);
     }

@@ -49,16 +49,13 @@ function correctasterisk() {
 }
 
 function reTeX() {
-  console.info('Start reTeX.');
   if(mathJaxReady){
     MathJax.Hub.Queue(['Typeset', MathJax.Hub]);
-  } else {
-    setTimeout(reTeX, 250); // check the status again after 250ms
   }
 }
 
 function renderAll() { 
-  console.info('Start to render.');
+  // console.info('Start to render.');
   // console.info(mathJaxReady);
   // correctasterisk();
   setTimeout(correctUnderscore, 500); // delay 0.5 second before correction
